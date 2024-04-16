@@ -4,8 +4,9 @@ from flask import (Flask, render_template, request,
 from dotenv import load_dotenv
 from flask_debugtoolbar import DebugToolbarExtension
 import boto3
-print(boto3.__version__, "*******************")
-
+from PIL import Image
+from PIL.ExifTags import TAGS
+import io
 
 
 load_dotenv()
@@ -26,12 +27,60 @@ s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id,
 
 
 ##############################################################################
+def upload_image_s3(file, bucket_name, filename):
+    """"Upload image to s3 bucket"""
+    try:
+        s3.upload_fileobj(
+            file,
+            bucket_name,
+            filename
+        )
+    except Exception as e:
+        print("error", e)
+    return '{} uploaded'.format(filename)
 
-@app.post('/test')
+
+def get_image_date(image_path):
+    try:
+
+        img = Image.open(image_path)
+
+        exif_data = img._getexif()
+
+
+        for tag, value in exif_data.items():
+            tag_name = TAGS.get(tag, tag)
+            if tag_name == 'DateTime':
+                return value
+    except (AttributeError, KeyError, IndexError):
+        pass
+
+    return None
+
+
+
+@app.post('/photo')
 def testimage():
     """test image"""
 
-    return ('hi')
+    file = request.files['file']
+    img_data = file.read()
+    img_stream = io.BytesIO(img_data)
+    img = Image.open(img_stream)
+    print('img**********', img)
+    metadata = {
+        'format': img.format,
+        'mode': img.mode,
+        'size': img.size
+    }
+    print('metadata', metadata)
+    print('file', file)
+
+    if file:
+        filename = file.filename
+        print(filename, 'name********')
+        output = upload_image_s3(file, bucket_name, filename)
+        return str(output)
 
 
 @app.errorhandler(404)
