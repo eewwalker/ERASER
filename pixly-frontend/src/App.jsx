@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import './App.css';
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import RouteList from './RouteList';
 
 
 /** Component for entire page.
@@ -8,17 +9,17 @@ import './App.css';
  * State: none
  *
 */
-
-function App() {
-
-
+const App = () => {
   return (
-    <div className="App">
-      <main>
-      Pixly.
-      </main>
+    <div className='App'>
+      <BrowserRouter>
+        <NavBar />
+        <RouteList />
+      </BrowserRouter>
+
     </div>
   );
 };
 
-export default App;
+export default App
+
