@@ -6,12 +6,14 @@ from models import db, connect_db, Metadata
 from flask_debugtoolbar import DebugToolbarExtension
 from utils import upload_image_s3 as upload, get_image_metadata as metadata
 from flask_bcrypt import Bcrypt
+from flask_cors import CORS
 
 bcrypt = Bcrypt()
 
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app)
 
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
@@ -25,25 +27,26 @@ connect_db(app)
 
 ##############################################################################
 
+
 @app.post('/photo')
 def upload_image():
     """Upload image to s3, and extracts metadata from image. Stores
     metadata in database, and responds with user's image (str)"""
 
     file = request.files['file']
+    author = request.form['author']
+    print(author, file, "AUTHOR AND FILE*******")
     # img_metadata insert into DB
     img_metadata = metadata(file)
-    print(type(img_metadata['make']), "************MAKE!!!!!!!!!!!")
-    metadata_submit = Metadata.add_image_metadata(img_metadata)
-    print(img_metadata, "metaDataSUBMIT*********")
 
+    metadata_submit = Metadata.add_image_metadata(img_metadata, author)
+    print(metadata_submit, "metaDataSUBMIT*********")
 
     # Uploads image to s3 and responds with image(str)
     if file:
         filename = file.filename
         output = upload(file, bucket_name, filename)
         return str(output)
-
 
     # if user -> user.metadata (use User.signup)
     # if not -> user.metadata
