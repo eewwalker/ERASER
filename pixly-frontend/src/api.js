@@ -7,9 +7,9 @@ class PixlyApi {
 
   static async request(endpoint, data = {}, method = "GET") {
     const url = new URL(`${BASE_URL}/${endpoint}`);
-    const headers = {
-      'content-type': 'application/json',
-    };
+    // const headers = {
+    //   'content-type': 'application/json',
+    // };
 
     url.search = (method === "GET")
       ? new URLSearchParams(data).toString()
@@ -19,8 +19,8 @@ class PixlyApi {
     const body = (method !== "GET")
       ? JSON.stringify(data)
       : undefined;
-
-    const resp = await fetch(url, { method, body, headers });
+    // , headers
+    const resp = await fetch(url, { method, body });
 
     if (!resp.ok) {
       console.error("API Error:", resp.statusText, resp.status);
@@ -35,7 +35,9 @@ class PixlyApi {
   /** POST request to PIXLY API to upload image. */
 
   static async upload(file, author) {
+    console.log('API**', file, author);
     const data = { file, author };
+    console.log('data', data);
     let res = await this.request('photo', data, "POST");
     return res;
   }
@@ -43,4 +45,4 @@ class PixlyApi {
 
 
 
-export default PixlyApi
+export default PixlyApi;
