@@ -13,7 +13,7 @@ bcrypt = Bcrypt()
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins='*')
 
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
@@ -59,3 +59,7 @@ def page_not_found(e):
     """404 NOT FOUND page."""
 
     return render_template('404.html'), 404
+
+
+if __name__ == '__main__':
+    app.run(port=5001)
