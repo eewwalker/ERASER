@@ -36,30 +36,40 @@ def get_image_metadata(image_path):
         img = Image.open(image_path)
 
         exif_data = img._getexif()
-
         metadata = {}
+
+        if exif_data is None:
+            return {
+                'date_time': '1',
+                'iso': 1,
+                'height': 1,
+                'width': 1,
+                'color': 1,
+                'make': '1'
+
+            }
 
         for tag, value in exif_data.items():
             tag_name = TAGS.get(tag, tag)
             if tag_name == 'DateTime':
-                metadata['date_time'] = value
+                metadata['date_time'] = value or '1'
             if tag_name == 'ISOSpeedRatings':
-                metadata['iso'] = value
+                metadata['iso'] = value or 1
             # make a func for GPS to parse info before it gets into DB.
             # if tag_name == 'GPSInfo':
             #     print(type(value), "gps TYPE VALUE***********")
             #     print(value, "gps TYPE VALUE***********")
                 # metadata['location'] = value
             if tag_name == 'ExifImageHeight':
-                metadata['height'] = value
+                metadata['height'] = value or 1
             if tag_name == 'ExifImageWidth':
-                metadata['width'] = value
+                metadata['width'] = value or 1
             if tag_name == 'ColorSpace':
-                metadata['color'] = value
+                metadata['color'] = value or 1
             if tag_name == 'Make':
-                metadata['make'] = value
-                print(type(value), "MAKE APPLE")
+                metadata['make'] = value or '1'
 
         return metadata
+
     except (AttributeError):
         return None

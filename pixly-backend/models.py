@@ -54,16 +54,23 @@ class Metadata(db.Model):
         nullable=True,
     )
 
+    key = db.Column(
+        db.String(20),
+        nullable=False
+
+    )
+
     @classmethod
-    def add_image_metadata(cls, img_metadata):
+    def add_image_metadata(cls, img_metadata, filename):
         """Adds metadata to database."""
 
-        image_metadata = Metadata(date_time=img_metadata['date_time'],
-                                  iso=img_metadata['iso'],
-                                  height=img_metadata['height'],
-                                  width=img_metadata['width'],
-                                  color=img_metadata['color'],
-                                  make=img_metadata['make'])
+        image_metadata = Metadata(date_time=img_metadata.get('date_time'),
+                                  iso=img_metadata.get('iso'),
+                                  height=img_metadata.get('height'),
+                                  width=img_metadata.get('width'),
+                                  color=img_metadata.get('color'),
+                                  make=img_metadata.get('make'),
+                                  key=filename)
 
         db.session.add(image_metadata)
         db.session.commit()

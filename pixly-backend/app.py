@@ -46,6 +46,8 @@ def upload_image():
     if file:
         filename = file.filename
         output = upload(file, bucket_name, filename)
+        print('imgMETADATA', img_metadata)
+        metadata_submit = Metadata.add_image_metadata(img_metadata, filename)
         return str(output)
 
     # if user -> user.metadata (use User.signup)
