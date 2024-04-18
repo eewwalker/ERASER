@@ -3,6 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import RouteList from "./RouteList";
 import PixlyApi from "./api";
 import NavBar from "./NavBar";
+import Photo from "./Photo";
 
 /** Component for entire page.
  *
@@ -11,19 +12,13 @@ import NavBar from "./NavBar";
  *
  */
 const App = () => {
-  
   async function handleSave(uploadData) {
     let resp;
-    const file = uploadData.file;
-    const author = uploadData.author;
 
-    console.log(
-      "uploadData:",uploadData,
-      "file in app:", file,
-      "author in app:", author);
+    console.log("uploadData:", uploadData);
 
     try {
-      resp = await PixlyApi.upload(file, author);
+      resp = await PixlyApi.upload(uploadData);
     } catch (err) {
       console.log(err);
     }

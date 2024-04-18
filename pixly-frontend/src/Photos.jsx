@@ -1,5 +1,4 @@
 import React from 'react';
-
 /** Component for entire page.
  *
  * Props: none

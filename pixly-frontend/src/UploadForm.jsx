@@ -1,12 +1,11 @@
 import { React, useState } from "react";
 import Alert from "./Alert";
-import { styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import IconButton from '@mui/material/IconButton';
-import Fingerprint from '@mui/icons-material/Fingerprint';
-
+import IconButton from "@mui/material/IconButton";
+import Fingerprint from "@mui/icons-material/Fingerprint";
 
 /** Component for entire page.
  *
@@ -15,43 +14,49 @@ import Fingerprint from '@mui/icons-material/Fingerprint';
  *
  */
 
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
   height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
+  overflow: "hidden",
+  position: "absolute",
   bottom: 0,
   left: 0,
-  whiteSpace: 'nowrap',
+  whiteSpace: "nowrap",
   width: 1,
 });
 
 const initialFormData = {
-  file: "",
   author: "",
 };
 
 const UploadForm = ({ handleSave }) => {
   const [formData, setFormData] = useState(initialFormData);
+  const [file, setFile] = useState(null);
 
   function handleChange(evt) {
-    const { name, value } = evt.target;
-    setFormData((fData) => ({
-      ...fData,
-      [name]: value,
-    }));
+    const { name, value, files } = evt.target;
+    if (files) {
+      setFile(files[0]);
+    } else {
+      setFormData((fData) => ({
+        ...fData,
+        [name]: value,
+      }));
+    }
   }
 
-  console.log(formData);
+  console.log(formData, "in UPLOAD FORM", file, "FILE IN UPLOAD FORM");
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    handleSave(formData);
+    const data = new FormData();
+    data.append("file", file);
+    data.append("author", formData.author);
+    handleSave(data);
     setFormData(initialFormData);
+    setFile(null);
   }
-
-
 
   return (
     <div className="UploadForm">
@@ -71,8 +76,11 @@ const UploadForm = ({ handleSave }) => {
           startIcon={<CloudUploadIcon />}
         >
           Upload file
-          <VisuallyHiddenInput type="file" onChange={handleChange} value={formData.file} name="file" />
-
+          <VisuallyHiddenInput
+            type="file"
+            onChange={handleChange}
+            name="file"
+          />
         </Button>
         <IconButton aria-label="fingerprint" color="success" type="submit">
           <Fingerprint />

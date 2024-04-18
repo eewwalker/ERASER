@@ -32,26 +32,22 @@ connect_db(app)
 def upload_image():
     """Upload image to s3, and extracts metadata from image. Stores
     metadata in database, and responds with user's image (str)"""
+    print("HI******************")
 
     file = request.files['file']
     author = request.form['author']
-    print(author, file, "AUTHOR AND FILE*******")
-    # img_metadata insert into DB
-    img_metadata = metadata(file)
+    print(author, file, "AUTHOR AND FILE******* server side")
 
-    metadata_submit = Metadata.add_image_metadata(img_metadata, author)
-    print(metadata_submit, "metaDataSUBMIT*********")
+    img_metadata = metadata(file)
 
     # Uploads image to s3 and responds with image(str)
     if file:
         filename = file.filename
         output = upload(file, bucket_name, filename)
         print('imgMETADATA', img_metadata)
-        metadata_submit = Metadata.add_image_metadata(img_metadata, filename)
+        metadata_submit = Metadata.add_image_metadata(
+            img_metadata, filename, author)
         return str(output)
-
-    # if user -> user.metadata (use User.signup)
-    # if not -> user.metadata
 
 
 @app.errorhandler(404)

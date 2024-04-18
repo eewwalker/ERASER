@@ -61,7 +61,7 @@ class Metadata(db.Model):
     )
 
     @classmethod
-    def add_image_metadata(cls, img_metadata, filename):
+    def add_image_metadata(cls, img_metadata, filename, author):
         """Adds metadata to database."""
 
         image_metadata = Metadata(date_time=img_metadata.get('date_time'),
@@ -70,7 +70,8 @@ class Metadata(db.Model):
                                   width=img_metadata.get('width'),
                                   color=img_metadata.get('color'),
                                   make=img_metadata.get('make'),
-                                  key=filename)
+                                  key=filename,
+                                  author=author)
 
         db.session.add(image_metadata)
         db.session.commit()
