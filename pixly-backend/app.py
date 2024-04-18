@@ -3,7 +3,8 @@ from flask import (Flask, request, json, jsonify)
 from dotenv import load_dotenv
 from models import db, connect_db, Metadata
 from flask_debugtoolbar import DebugToolbarExtension
-from utils import upload_image_s3 as upload, get_image_metadata as metadata
+from utils import upload_image_s3 as upload, get_image_metadata as metadata, \
+    convert_bw, get_image_and_upload
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 
@@ -55,3 +56,22 @@ def get_all_photos():
     allkeys_list = [key[0] for key in all_keys]
 
     return jsonify(allkeys_list)
+
+
+@app.post('/edit-photo/<id>')
+def edit_image(id):
+    """Edit image based on id and filter """
+    try:
+        data = request.get_json()
+        # image_id = request.json['id']
+        convert_bw_filter = data.get('convert_bw', False)
+        image_bytes = get_image_and_upload(id)
+
+        if convert_bw_filter:
+            image = convert_bw(image_bytes)
+            upload(image)
+
+        return {'status': 'success'}
+
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)})
