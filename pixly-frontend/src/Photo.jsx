@@ -1,8 +1,9 @@
 import { React } from "react";
 import "./Photo.css";
-/** Component for entire page.
+
+/** Photo Component
  *
- * Props: none
+ * Props: photo: key name '...JPG'
  * State: none
  *
  */

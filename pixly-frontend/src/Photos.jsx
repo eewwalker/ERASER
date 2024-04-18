@@ -1,15 +1,18 @@
 import React from "react";
 import Photo from "./Photo";
 import { Link } from "react-router-dom";
+
 /** Component for entire page.
  *
- * Props: none
+ * Props: photos [keyNames]
  * State: none
  *
+ * App -> RoutesList -> Photos -> Photo
  */
 
 const Photos = ({ photos }) => {
-  console.log("photos", photos);
+
+
   return (
     <div className="Photos">
       {photos.map((photo, idx) => (

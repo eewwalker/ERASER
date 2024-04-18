@@ -3,11 +3,13 @@ import { useParams } from "react-router-dom";
 import Photo from "./Photo";
 
 /**
- *
+ * SinglePhoto component renders photo with id param
  * State:
- * loading: boolean
+ * -loading: true/false
  *
  * Props: none
+ *
+ *  App -> RouteList -> SinglePhoto
  */
 
 

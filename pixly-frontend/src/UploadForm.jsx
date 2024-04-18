@@ -9,9 +9,12 @@ import Fingerprint from "@mui/icons-material/Fingerprint";
 
 /** Component for entire page.
  *
- * Props: none
- * State: formData
+ * Props: handleSave() function from parent component
+ * State:
+ * -formData: {author}
+ * -file: photo file
  *
+ * App -> RouteList -> UpLoadForm
  */
 
 const VisuallyHiddenInput = styled("input")({
@@ -38,22 +41,25 @@ const UploadForm = ({ handleSave }) => {
     const { name, value, files } = evt.target;
     if (files) {
       setFile(files[0]);
+
     } else {
       setFormData((fData) => ({
         ...fData,
         [name]: value,
+
       }));
     }
   }
 
-  console.log(formData, "in UPLOAD FORM", file, "FILE IN UPLOAD FORM");
 
   function handleSubmit(evt) {
     evt.preventDefault();
+
     const data = new FormData();
     data.append("file", file);
     data.append("author", formData.author);
     handleSave(data);
+
     setFormData(initialFormData);
     setFile(null);
   }

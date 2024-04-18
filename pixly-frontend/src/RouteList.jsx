@@ -2,15 +2,16 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Homepage from "./Homepage";
 import Photos from "./Photos";
-import Photo from "./Photo";
 import EditForm from "./EditForm";
 import UploadForm from "./UploadForm";
 import SinglePhoto from "./SinglePhoto";
 
-/** Component for entire page.
+/** RouteList Component
  *
- * Props: none
+ * Props: handleSave(), photos[keyNames]
  * State: none
+ *
+ * App => RouteList -> {Homepage, Photos, SinglePhoto, EditForm, UploadForm}
  *
  */
 const RouteList = ({ handleSave, photos }) => {
