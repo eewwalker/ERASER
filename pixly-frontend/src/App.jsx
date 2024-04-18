@@ -4,7 +4,6 @@ import RouteList from "./RouteList";
 import PixlyApi from "./api";
 import NavBar from "./NavBar";
 
-
 /** Component for entire page.
  *
  * Props: none
@@ -14,14 +13,18 @@ import NavBar from "./NavBar";
 const App = () => {
   const [photos, setPhotos] = useState([]);
   const location = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(
     function fetchAllPhotosOnMount() {
       async function fetchPhotos() {
-        if (location.pathname === '/photos') {
+        console.log("hi");
+        if (location.pathname === "/photos") {
+          setIsLoading(true);
           const photos = await PixlyApi.getAllPhotos();
+          console.log("bye");
           setPhotos(photos);
-
+          setIsLoading(false);
         }
       }
 
@@ -30,24 +33,29 @@ const App = () => {
     [location.pathname]
   );
 
-
-
   async function handleSave(uploadData) {
     let resp;
+    setIsLoading(true);
 
     try {
       resp = await PixlyApi.upload(uploadData);
-
     } catch (err) {
       console.log(err);
     }
+    setIsLoading(false);
     return resp;
   }
 
   return (
     <div className="App">
-      <NavBar />
-      <RouteList handleSave={handleSave} photos={photos} />
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <div>
+          <NavBar />
+          <RouteList handleSave={handleSave} photos={photos} />
+        </div>
+      )}
     </div>
   );
 };
