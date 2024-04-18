@@ -1,6 +1,7 @@
 import React from "react";
-import Photo from "./Photo";
 import { Link } from "react-router-dom";
+import PhotoTemplate from "./PhotoTemplate";
+import { Grommet, Grid, Page, PageContent } from "grommet";
 
 /** Component for entire page.
  *
@@ -11,16 +12,20 @@ import { Link } from "react-router-dom";
  */
 
 const Photos = ({ photos }) => {
-
-
   return (
-    <div className="Photos">
-      {photos.map((photo, idx) => (
-        <Link key={idx} to={`/photo/${photo}`}>
-          <Photo photo={photo} />
-        </Link>
-      ))}
-    </div>
+    <Grommet full>
+      <PageContent>
+        <Page>
+          <Grid columns="medium" gap="large" pad={{ bottom: "large" }}>
+            {photos.map((photo, idx) => (
+              <Link key={idx} to={`/photo/${photo}`}>
+                <PhotoTemplate photo={photo} />
+              </Link>
+            ))}
+          </Grid>
+        </Page>
+      </PageContent>
+    </Grommet>
   );
 };
 

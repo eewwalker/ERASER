@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 import { useParams } from "react-router-dom";
-import Photo from "./Photo";
+import PhotoTemplate from "./PhotoTemplate";
 
 /**
  * SinglePhoto component renders photo with id param
@@ -20,7 +20,7 @@ const SinglePhoto = () => {
 
   return (
     <div>
-      <Photo photo={id} />
+      <PhotoTemplate photo={id} />
     </div>
   );
 };
