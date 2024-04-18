@@ -1,5 +1,5 @@
 import React from 'react';
-import {PageHeader} from "grommet"
+import { PageHeader } from "grommet";
 
 /** Component for entire page.
  *
@@ -10,7 +10,8 @@ import {PageHeader} from "grommet"
 const Homepage = () => {
     return (
         <div className='Homepage'>
-        <PageHeader title="Welcome to Pixly!" />
+
+            <PageHeader title="Welcome to Pixly!" />
         </div>
     );
 };

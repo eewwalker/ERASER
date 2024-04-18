@@ -1,5 +1,5 @@
 import os
-import io
+from io import BytesIO
 from PIL.ExifTags import TAGS
 from PIL import Image
 import boto3
@@ -25,7 +25,7 @@ s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id,
 
 def upload_image_s3(file, bucket_name, filename):
     """"Upload image to s3 bucket."""
-    print('filename', filename)
+    breakpoint()
     try:
         s3.upload_fileobj(
             file,
@@ -41,28 +41,39 @@ def upload_image_s3(file, bucket_name, filename):
     return '{} uploaded'.format(filename)
 
 
-def get_image_and_upload(image_id):
+def get_image_and_convert_to_bytes(image_id):
     """get the image from s3 bucket"""
     image_path = f'{BASE_URL}{image_id}'
+    print('ultils image_path & image_id & URL ',
+          image_path, image_id, BASE_URL)
     # fetch img from AWS
     try:
-        response = s3.get_object(Bucket=bucket_name, Key=image_path)
+        print('BEFOREbucket_name', 'image_path', bucket_name, image_path)
+        response = s3.get_object(Bucket=bucket_name, Key=image_id)
+        print('bucket_name', 'image_path', bucket_name, image_path)
+        print('resp', response)
         # read contents of file
         image_data = response['Body'].read()
-        image_bytes = io.BytesIO(image_data)
+        breakpoint()
+        image_bytes = BytesIO(image_data)
+        test_image = Image.open(image_bytes)
+        print('testIMAEG', test_image)
         # Rewind to the start of the file
         image_bytes.seek(0)
-        return upload_image_s3(image_bytes, bucket_name, image_id)
+        return image_bytes
     except Exception as e:
         return f'Failed to process {image_id} {e}'
 
 
-def convert_bw(image_bytes):
+def convert_img_bw(image_bytes):
     """convert image to black and white"""
-
+    print('imgInfuncB&W', image_bytes)
+    # output_path = image_bytes
+    # img.save(output_path)
     image = Image.open(image_bytes)
+    print('imgInFunc', image)
     bw_image = image.convert('L')
-
+    print('b&w', bw_image)
     return bw_image
 
 
@@ -71,8 +82,8 @@ def get_image_metadata(image_path):
     try:
 
         img = Image.open(image_path)
-
-        exif_data = img._getexif()
+        # look into .getexif()
+        exif_data = img.getexif()
         metadata = {}
 
         if exif_data is None:
