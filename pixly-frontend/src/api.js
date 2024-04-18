@@ -11,7 +11,6 @@ class PixlyApi {
     console.log(uploadData, "FILE AND AUTHOR API");
     const url = new URL(`${BASE_URL}/photo`);
 
-
     try {
       const resp = await fetch(url, {
         method: 'POST',
@@ -24,7 +23,34 @@ class PixlyApi {
       return null;
     }
   }
+
+  static async getAllPhotos() {
+    const url = new URL(`${BASE_URL}/photos`);
+
+    try {
+      const resp = await fetch(url);
+      const data = resp.json();
+      console.log("Success!");
+
+      return data;
+
+    } catch (error) {
+      console.error("Upload failed:", error);
+
+      return null;
+    }
+
+
+  }
+
+
+
+
+
+
 }
+
+
 
 
 export default PixlyApi;

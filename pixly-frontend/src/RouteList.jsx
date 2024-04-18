@@ -12,19 +12,19 @@ import UploadForm from "./UploadForm";
  * State: none
  *
  */
-const RouteList = ({handleSave}) => {
-  return (
-    <div className="RouteList">
-      <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/photos" element={<Photos />} />
-        <Route path="/photo:id" element={<Photo />} />
-        <Route path="/edit:id" element={<EditForm />} />
-        <Route path="/upload" element={<UploadForm handleSave={handleSave}/>} />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </div>
-  );
+const RouteList = ({ handleSave, photos }) => {
+    return (
+        <div className="RouteList">
+            <Routes>
+                <Route path="/" element={<Homepage />} />
+                <Route path="/photos" element={<Photos photos={photos} />} />
+                <Route path="/photo:id" element={<Photo />} />
+                <Route path="/edit:id" element={<EditForm />} />
+                <Route path="/upload" element={<UploadForm handleSave={handleSave} />} />
+                <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+        </div>
+    );
 };
 
 export default RouteList;

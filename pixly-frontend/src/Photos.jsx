@@ -1,4 +1,5 @@
 import React from 'react';
+import Photo from './Photo';
 /** Component for entire page.
  *
  * Props: none
@@ -6,9 +7,11 @@ import React from 'react';
  *
 */
 
-const Photos = () => {
+const Photos = ({ photos }) => {
+    console.log('photos', photos);
     return (
         <div className='Photos'>
+            {photos.map((photo, idx) => <Photo key={idx} photo={photo} />)}
 
         </div>
     );

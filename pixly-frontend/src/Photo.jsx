@@ -6,15 +6,16 @@ import React from "react";
  *
  */
 
-const S3_URL = "https://pixly-app-bucket.s3.us-west-1.amazonaws.com";
+const S3_URL = "https://pixlyappp.s3.us-west-1.amazonaws.com";
 
 
 // add dynamic image parameter below.
 
-const Photo = () => {
+const Photo = ({ photo }) => {
+  console.log('photo', photo);
   return (
     <div className="Photo">
-      <img src={`${S3_URL}/shoes.JPG`} alt="photo" />
+      <img src={`https://pixlyappp.s3.us-west-1.amazonaws.com/cat.jpeg`} alt="photo" />
     </div>
   );
 };
