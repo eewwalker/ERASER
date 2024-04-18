@@ -16,6 +16,9 @@ s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id,
                   region_name=region_name)
 
 
+###############################################################################
+
+
 def upload_image_s3(file, bucket_name, filename):
     """"Upload image to s3 bucket."""
     try:
@@ -27,6 +30,7 @@ def upload_image_s3(file, bucket_name, filename):
     except Exception as e:
         print("error", e)
     return '{} uploaded'.format(filename)
+
 
 
 def get_image_metadata(image_path):
@@ -46,7 +50,6 @@ def get_image_metadata(image_path):
                 'width': 1,
                 'color': 1,
                 'make': '1'
-
             }
 
         for tag, value in exif_data.items():

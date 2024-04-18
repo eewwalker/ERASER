@@ -1,6 +1,5 @@
 import os
-from flask import (Flask, render_template, request,
-                   flash, redirect, session, g, json, jsonify)
+from flask import (Flask, request, json, jsonify)
 from dotenv import load_dotenv
 from models import db, connect_db, Metadata
 from flask_debugtoolbar import DebugToolbarExtension
@@ -31,7 +30,7 @@ connect_db(app)
 @app.post('/photo')
 def upload_image():
     """Upload image to s3, and extracts metadata from image. Stores
-    metadata in database, and responds with user's image (str)"""
+    metadata in DB, and responds with user's image (str)."""
 
     file = request.files['file']
     author = request.form['author']
@@ -42,24 +41,17 @@ def upload_image():
     if file:
         filename = file.filename
         output = upload(file, bucket_name, filename)
-        print('imgMETADATA', img_metadata)
         metadata_submit = Metadata.add_image_metadata(
             img_metadata, filename, author)
+        print("Success! metadata_submit:", metadata_submit)
         return str(output)
 
 
 @app.get('/photos')
 def get_all_photos():
-    """ Get all photos by key from DB """
+    """Get all photos by key from DB."""
     all_keys = Metadata.query.with_entities(Metadata.key).all()
 
     allkeys_list = [key[0] for key in all_keys]
 
     return jsonify(allkeys_list)
-
-
-@app.errorhandler(404)
-def page_not_found(e):
-    """404 NOT FOUND page."""
-
-    return render_template('404.html'), 404
