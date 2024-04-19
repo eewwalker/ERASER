@@ -87,7 +87,8 @@ def edit_image(id):
             new_rgb_img.seek(0)
             upload_image_s3(new_rgb_img, bucket_name, id)
 
-        return {'status': 'success'}
+        response_data = {'status': 'success', 'message': 'Image Edited.'}
+        return jsonify(response_data), 201
 
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})

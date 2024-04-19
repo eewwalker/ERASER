@@ -1,7 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { Button } from 'grommet';
 
-/** NavBar Component
+/** NavBar Component.
  *
  * Props: none
  * State: none
@@ -11,8 +12,9 @@ import { NavLink } from 'react-router-dom';
 const NavBar = () => {
     return (
         <div className='NavBar'>
-            <NavLink to='/upload'>Upload</NavLink>
-            <NavLink to='/photos'>Photos</NavLink>
+             <NavLink to='/'><Button label="Home" color="status-ok"/></NavLink>
+            <NavLink to='/upload'><Button label="Upload"  color="graph-1"/></NavLink>
+            <NavLink to='/photos'><Button label="Photos" primary color="graph-1"/></NavLink>
 
         </div>
     );

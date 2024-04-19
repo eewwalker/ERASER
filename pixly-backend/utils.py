@@ -65,7 +65,6 @@ def convert_img_rgb_vals(tempfile, rgb_vals):
     """alter img rbg values"""
     image = Image.open(tempfile).convert('RGB')
     pixels = image.load()
-
     for x in range(image.width):
         for y in range(image.height):
             r, g, b = pixels[x, y]

@@ -1,31 +1,16 @@
-import { React, useState } from "react";
-import { styled } from "@mui/material/styles";
-import TextField from "@mui/material/TextField";
-import { FileInput } from "grommet";
+import { React, useState, useEffect } from "react";
+import { FileInput, Button } from "grommet";
 import UploadButton from "./UploadButton";
-import LoadingImageBar from './LoadingImageBar'
 
-/** Component for entire page.
+/** Component for Upload page.
  *
  * Props: handleSave() function from parent component
  * State:
  * -formData: {author}
  * -file: photo file
  *
- * App -> RouteList -> UpLoadForm
+ * App -> RouteList -> UploadForm
  */
-
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
 
 const initialFormData = {
   author: "",
@@ -47,12 +32,17 @@ const UploadForm = ({ handleSave }) => {
     }
   }
 
-  function handleSubmit(evt) {
+  async function handleSubmit(evt) {
     evt.preventDefault();
     const data = new FormData();
     data.append("file", file);
     data.append("author", formData.author);
-    handleSave(data);
+
+    try {
+      await handleSave(data);
+    } catch (error) {
+      console.error("Something went wrong with upload:", error);
+    }
 
     setFormData(initialFormData);
     setFile(null);
@@ -60,7 +50,11 @@ const UploadForm = ({ handleSave }) => {
 
   return (
     <div className="UploadForm">
-      <form id="UploadForm" className="Upload-form" onSubmit={handleSubmit}>
+      <br />
+      <br />
+      <br />
+      <br />
+      <form id="UploadForm" onSubmit={handleSubmit}>
         <FileInput onChange={handleChange} type="file" name="file" />
         <UploadButton />
       </form>

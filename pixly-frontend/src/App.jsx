@@ -15,14 +15,30 @@ import {
 } from "grommet";
 import { Moon, Sun } from "grommet-icons";
 import { deepMerge } from "grommet/utils";
-import LoadingImageBar from "./LoadingImageBar";
+
+
+/** Component for entire page.
+ *
+ * Props: none
+ * State:
+ * -photos: [date_time, iso, height, width, color, make, key, author]
+ * -isLoading: true/false
+ * -dark: true/false
+ *
+ *
+ *
+ * App -> NavBar -> RoutesList
+ *
+ */
+
+/////////////////////////////////////////////////// Global Element Styles
 
 const theme = deepMerge(grommet, {
   global: {
     colors: {
       brand: "neutral-1",
       dark: "blue",
-      light: "black"
+      light: "black",
     },
     font: {
       family: "Roboto",
@@ -34,36 +50,22 @@ const theme = deepMerge(grommet, {
 
 const AppBar = (props) => (
   <Header
-    background="brand"
+    background="#AAAAAA"
     pad={{ left: "medium", right: "small", vertical: "small" }}
     elevation="medium"
     {...props}
   />
 );
+////////////////////////////////////////////////////////////////// APP
 
-/** Component for entire page.
- *
- * Props: none
- * State:
- * -photos: [date_time, iso, height, width, color, make, key, author]
- * -isLoading: true/false
- * -dark: true/false
- * -uploadLoading: true/false
- *
- *
- * App -> NavBar -> RoutesList
- *
- */
 const App = () => {
   const [photos, setPhotos] = useState([]);
-  const [editData, setEditData] = useState({ id: '', rgb: { r: 0, g: 0, b: 0 }, bw: False });
-
   const [isLoading, setIsLoading] = useState(false);
   const [dark, setDark] = useState(false);
-  const [uploadLoading, setUploadLoading] = useState(false);
 
   const location = useLocation();
 
+  /** Retrieves all photos from database on mount. */
   useEffect(
     function fetchAllPhotosOnMount() {
       async function fetchPhotos() {
@@ -96,20 +98,34 @@ const App = () => {
     return resp;
   }
 
-  /** rgbEditSave receives rbg from form and sends to backend to edit image */
-  async function rgbEditSave(rgbVals) {
+  /** rgbEditSave receives rgb from form and sends to backend to edit image */
+  async function rgbEditSave(photoId, rgbVals) {
     let resp;
     setIsLoading(true);
-    setEditData(prevData => ({
-      ...prevData,
-      prevData[rgb]
-
-    }));
 
     try {
-      resp =
+      resp = await PixlyApi.editPhoto({ imgId: photoId, rgbVals });
+    } catch (error) {
+      console.error("Error editing photo:", error);
     }
+    setIsLoading(false);
 
+    return resp;
+  }
+
+  /** convert_bw receives a photoId and responds with b&w photo */
+  async function convert_to_bw(photoId) {
+    let resp;
+    setIsLoading(true);
+    
+    try {
+      resp = await PixlyApi.editPhoto({ imgId: photoId, convert_bw: true });
+    } catch (error) {
+      console.error("Error converting to B&W:", error);
+    }
+    setIsLoading(false);
+
+    return resp;
   }
 
   return (
@@ -131,7 +147,7 @@ const App = () => {
                     <Box
                       pad="small"
                       round="small"
-                      background={dark ? "dark-1" : "light-3"}
+                      background={dark ? "light-2" : "dark-1"}
                     >
                       {dark ? "Switch to Light Mode" : "Switch to Dark Mode"}
                     </Box>
@@ -142,11 +158,17 @@ const App = () => {
               <NavBar />
             </AppBar>
             <PageContent>
-              <RouteList handleSave={handleSave} rgbEditSave={rgbEditSave} photos={photos} />
+              <RouteList
+                handleSave={handleSave}
+                rgbEditSave={rgbEditSave}
+                photos={photos}
+                convert_to_bw={convert_to_bw}
+              />
             </PageContent>
           </Page>
         </div>
       )}
+
     </Grommet>
   );
 };

@@ -3,9 +3,22 @@ import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import { green } from "@mui/material/colors";
 import Button from "@mui/material/Button";
-import Fab from "@mui/material/Fab";
-import CheckIcon from "@mui/icons-material/Check";
-import SaveIcon from "@mui/icons-material/Save";
+
+
+/**
+ * Component UploadButton - used on UploadForm component.
+ * An extremely convoluted button w/ too many lines of code that could
+ * be severly reduced..
+ *
+ * State:
+ * loading: boolean
+ * success: boolean
+ *
+ * UploadForm -> UploadButton
+ *
+ */
+
+
 
 export default function CircularIntegration() {
   const [loading, setLoading] = React.useState(false);

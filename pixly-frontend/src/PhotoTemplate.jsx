@@ -11,11 +11,12 @@ import {
 } from "grommet";
 import { useContext } from "react";
 
-/** Photo Component
+/** Photo Component (card).
  *
  * Props: photo: key name '...JPG'
  * State: none
  *
+ * App -> RoutesList -> Photos -> PhotoTemplate
  */
 
 const S3_JAZZ = "https://pixly-app-bucket.s3.us-west-1.amazonaws.com";
@@ -37,7 +38,7 @@ const PhotoTemplate = ({ photo }) => {
 
   return (
     <Card height="medium" width="medium" background="light-1">
-      <CardBody pad="medium">
+      <CardBody pad="small">
           <img className="Photo-img" src={`${S3_JAZZ}/${photo}`} alt="photo" style={imgStyle}/>
       </CardBody>
     </Card>
