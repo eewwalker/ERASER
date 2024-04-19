@@ -51,20 +51,39 @@ def get_image_and_convert_to_bytes(image_id):
         response = s3.get_object(Bucket=bucket_name, Key=image_id)
         # read contents of file
         image_data = response['Body'].read()
-        breakpoint()
+
         image_bytes = BytesIO(image_data)
         # Rewind to the start of the file
         image_bytes.seek(0)
         return image_bytes
+
     except Exception as e:
         return f'Failed to process {image_id} {e}'
 
-# format = 'png'-> test without format.
+
+def convert_img_rgb_vals(tempfile, rgb_vals):
+    """alter img rbg values"""
+    image = Image.open(tempfile).convert('RGB')
+    pixels = image.load()
+
+    for x in range(image.width):
+        for y in range(image.height):
+            r, g, b = pixels[x, y]
+            pixels[x, y] = (min(255, r + int(rgb_vals['r'])),
+                            min(255, g + int(rgb_vals['g'])),
+                            min(255, b + int(rgb_vals['b'])))
+
+    newfile_to_upload = BytesIO()
+    image.save(newfile_to_upload, format='png')
+
+    return newfile_to_upload
+
+
 def convert_img_bw(tempfile):
     """convert image to black and white"""
 
     image = Image.open(tempfile)
-    breakpoint()
+
     bw_image = image.convert('L')
     newfile_to_upload = BytesIO()
     bw_image.save(newfile_to_upload, format='png')
@@ -77,7 +96,7 @@ def get_image_metadata(image_path):
     try:
         img = Image.open(image_path)
         exif_data = img._getexif()
-        print(exif_data, "*****************")
+
         metadata = {}
 
         if exif_data is None:
