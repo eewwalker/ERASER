@@ -1,6 +1,7 @@
-import { React, useState, useEffect } from "react";
-import { FileInput, Button } from "grommet";
+import { React, useState } from "react";
+import { FileInput, Box } from "grommet";
 import UploadButton from "./UploadButton";
+import Alert from "./Alert";
 
 /** Component for Upload page.
  *
@@ -19,6 +20,7 @@ const initialFormData = {
 const UploadForm = ({ handleSave }) => {
   const [formData, setFormData] = useState(initialFormData);
   const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(localStorage.getItem('loading'));
 
   function handleChange(evt) {
     const { name, value, files } = evt.target;
@@ -34,6 +36,7 @@ const UploadForm = ({ handleSave }) => {
 
   async function handleSubmit(evt) {
     evt.preventDefault();
+
     const data = new FormData();
     data.append("file", file);
     data.append("author", formData.author);
@@ -43,21 +46,25 @@ const UploadForm = ({ handleSave }) => {
     } catch (error) {
       console.error("Something went wrong with upload:", error);
     }
-
+    localStorage.setItem('loading', true);
+    localStorage.setItem('id', file.name);
     setFormData(initialFormData);
     setFile(null);
   }
 
   return (
     <div className="UploadForm">
-      <br />
-      <br />
-      <br />
-      <br />
-      <form id="UploadForm" onSubmit={handleSubmit}>
-        <FileInput onChange={handleChange} type="file" name="file" />
-        <UploadButton />
-      </form>
+      <Box>
+        <br />
+        <br />
+        {loading && <Alert photoId={localStorage.getItem('id')} />}
+        <br />
+        <br />
+        <form id="UploadForm" onSubmit={handleSubmit}>
+          <FileInput onChange={handleChange} type="file" name="file" />
+          <UploadButton />
+        </form>
+      </Box>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import os
 from flask import (Flask, request, jsonify)
 from dotenv import load_dotenv
-from models import connect_db, Metadata
+from models import db, connect_db, Metadata
 from flask_debugtoolbar import DebugToolbarExtension
 from utils import upload_image_s3, get_image_metadata, convert_img_rgb_vals, \
     convert_img_bw, get_image_and_convert_to_bytes
@@ -43,6 +43,7 @@ def upload_image():
     # Uploads image to s3 and responds with image(str)
     if file:
         file.seek(0)
+        # img.JPG
         filename = file.filename
 
         output = upload_image_s3(file, bucket_name, filename)

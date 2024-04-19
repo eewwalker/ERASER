@@ -39,7 +39,7 @@ const PhotoTemplate = ({ photo }) => {
   return (
     <Card height="medium" width="medium" background="light-1">
       <CardBody pad="small">
-          <img className="Photo-img" src={`${S3_JAZZ}/${photo}`} alt="photo" style={imgStyle}/>
+        <img className="Photo-img" src={`${S3_EMILY}/${photo}`} alt="photo" style={imgStyle} />
       </CardBody>
     </Card>
   );

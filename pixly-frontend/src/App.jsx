@@ -83,6 +83,15 @@ const App = () => {
     [location.pathname]
   );
 
+  useEffect(
+    function clearLocalStorage() {
+      if (!location.pathname.startsWith('/upload')) {
+        localStorage.clear();
+      }
+    },
+    [location.pathname]
+  );
+
   /** handleSave receives photoData from form and sends to backend */
   async function handleSave(uploadData) {
     let resp;

@@ -43,9 +43,7 @@ def upload_image_s3(file, bucket_name, filename):
 
 def get_image_and_convert_to_bytes(image_id):
     """get the image from s3 bucket"""
-    image_path = f'{BASE_URL}{image_id}'
-    print('ultils image_path & image_id & URL ',
-          image_path, image_id, BASE_URL)
+
     # fetch img from AWS
     try:
         response = s3.get_object(Bucket=bucket_name, Key=image_id)
@@ -62,9 +60,10 @@ def get_image_and_convert_to_bytes(image_id):
 
 
 def convert_img_rgb_vals(tempfile, rgb_vals):
-    """alter img rbg values"""
+    """alter img rgb values"""
     image = Image.open(tempfile).convert('RGB')
     pixels = image.load()
+
     for x in range(image.width):
         for y in range(image.height):
             r, g, b = pixels[x, y]
