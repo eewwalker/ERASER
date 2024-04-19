@@ -117,7 +117,7 @@ const App = () => {
   async function convert_to_bw(photoId) {
     let resp;
     setIsLoading(true);
-    
+
     try {
       resp = await PixlyApi.editPhoto({ imgId: photoId, convert_bw: true });
     } catch (error) {
