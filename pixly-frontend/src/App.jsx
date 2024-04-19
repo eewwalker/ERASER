@@ -3,31 +3,26 @@ import { useLocation } from "react-router-dom";
 import RouteList from "./RouteList";
 import PixlyApi from "./api";
 import NavBar from "./NavBar";
+import LoadingBar from "./LoadingBar"
 import {
   Box,
   Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Grid,
   Grommet,
   grommet,
   Header,
-  Heading,
   Page,
   PageContent,
-  PageHeader,
-  Paragraph,
-  Text,
 } from "grommet";
 import { Moon, Sun } from "grommet-icons";
 import { deepMerge } from "grommet/utils";
+import LoadingImageBar from "./LoadingImageBar";
 
 const theme = deepMerge(grommet, {
   global: {
     colors: {
-      brand: "#020212",
+      brand: "neutral-1",
+      dark: "blue",
+        light: "black"
     },
     font: {
       family: "Roboto",
@@ -60,6 +55,7 @@ const App = () => {
   const [photos, setPhotos] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [dark, setDark] = useState(false);
+  const [uploadLoading, setUploadLoading] = useState(false)
 
   const location = useLocation();
 
@@ -98,7 +94,7 @@ const App = () => {
   return (
     <Grommet theme={theme} full themeMode={dark ? "dark" : "light"}>
       {isLoading ? (
-        <p>Loading...</p>
+        <LoadingBar/>
       ) : (
         <div>
           <Page>

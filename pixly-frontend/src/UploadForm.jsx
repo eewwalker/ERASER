@@ -1,11 +1,9 @@
 import { React, useState } from "react";
-import Alert from "./Alert";
 import { styled } from "@mui/material/styles";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import IconButton from "@mui/material/IconButton";
-import Fingerprint from "@mui/icons-material/Fingerprint";
+import { FileInput } from "grommet";
+import UploadButton from "./UploadButton";
+import LoadingImageBar from './LoadingImageBar'
 
 /** Component for entire page.
  *
@@ -41,20 +39,16 @@ const UploadForm = ({ handleSave }) => {
     const { name, value, files } = evt.target;
     if (files) {
       setFile(files[0]);
-
     } else {
       setFormData((fData) => ({
         ...fData,
         [name]: value,
-
       }));
     }
   }
 
-
   function handleSubmit(evt) {
     evt.preventDefault();
-
     const data = new FormData();
     data.append("file", file);
     data.append("author", formData.author);
@@ -66,31 +60,9 @@ const UploadForm = ({ handleSave }) => {
 
   return (
     <div className="UploadForm">
-      <form className="Upload-form" onSubmit={handleSubmit}>
-        <TextField
-          id="outlined-controlled"
-          label="Author"
-          name="author"
-          onChange={handleChange}
-          value={formData.author}
-        />
-        <Button
-          component="label"
-          role={undefined}
-          variant="contained"
-          tabIndex={-1}
-          startIcon={<CloudUploadIcon />}
-        >
-          Upload file
-          <VisuallyHiddenInput
-            type="file"
-            onChange={handleChange}
-            name="file"
-          />
-        </Button>
-        <IconButton aria-label="fingerprint" color="success" type="submit">
-          <Fingerprint />
-        </IconButton>
+      <form id="UploadForm" className="Upload-form" onSubmit={handleSubmit}>
+        <FileInput onChange={handleChange} type="file" name="file" />
+        <UploadButton />
       </form>
     </div>
   );
