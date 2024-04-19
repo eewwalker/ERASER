@@ -13,7 +13,7 @@ import PhotoTemplate from "./PhotoTemplate";
  */
 
 
-const SinglePhoto = () => {
+const SinglePhoto = ({ rgbEditSave }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
 

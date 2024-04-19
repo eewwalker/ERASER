@@ -42,7 +42,7 @@ class PixlyApi {
 
   }
   /** POST request to edit photo to black&white or change rgb values */
-  static async editPhoto(imgId, rgbVals, bw) {
+  static async editPhoto({ imgId, rgbVals, bw }) {
     const url = new URL(`${BASE_URL}/edit-photo/${imgId}`);
 
     try {

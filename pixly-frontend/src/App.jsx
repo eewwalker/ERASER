@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import RouteList from "./RouteList";
 import PixlyApi from "./api";
 import NavBar from "./NavBar";
-import LoadingBar from "./LoadingBar"
+import LoadingBar from "./LoadingBar";
 import {
   Box,
   Button,
@@ -22,7 +22,7 @@ const theme = deepMerge(grommet, {
     colors: {
       brand: "neutral-1",
       dark: "blue",
-        light: "black"
+      light: "black"
     },
     font: {
       family: "Roboto",
@@ -47,15 +47,20 @@ const AppBar = (props) => (
  * State:
  * -photos: [date_time, iso, height, width, color, make, key, author]
  * -isLoading: true/false
+ * -dark: true/false
+ * -uploadLoading: true/false
+ *
  *
  * App -> NavBar -> RoutesList
  *
  */
 const App = () => {
   const [photos, setPhotos] = useState([]);
+  const [editData, setEditData] = useState({ id: '', rgb: { r: 0, g: 0, b: 0 }, bw: False });
+
   const [isLoading, setIsLoading] = useState(false);
   const [dark, setDark] = useState(false);
-  const [uploadLoading, setUploadLoading] = useState(false)
+  const [uploadLoading, setUploadLoading] = useState(false);
 
   const location = useLocation();
 
@@ -91,10 +96,26 @@ const App = () => {
     return resp;
   }
 
+  /** rgbEditSave receives rbg from form and sends to backend to edit image */
+  async function rgbEditSave(rgbVals) {
+    let resp;
+    setIsLoading(true);
+    setEditData(prevData => ({
+      ...prevData,
+      prevData[rgb]
+
+    }));
+
+    try {
+      resp =
+    }
+
+  }
+
   return (
     <Grommet theme={theme} full themeMode={dark ? "dark" : "light"}>
       {isLoading ? (
-        <LoadingBar/>
+        <LoadingBar />
       ) : (
         <div>
           <Page>
@@ -121,7 +142,7 @@ const App = () => {
               <NavBar />
             </AppBar>
             <PageContent>
-              <RouteList handleSave={handleSave} photos={photos} />
+              <RouteList handleSave={handleSave} rgbEditSave={rgbEditSave} photos={photos} />
             </PageContent>
           </Page>
         </div>

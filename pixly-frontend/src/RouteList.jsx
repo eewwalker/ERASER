@@ -14,13 +14,13 @@ import SinglePhoto from "./SinglePhoto";
  * App => RouteList -> {Homepage, Photos, SinglePhoto, EditForm, UploadForm}
  *
  */
-const RouteList = ({ handleSave, photos }) => {
+const RouteList = ({ handleSave, rgbEditSave, photos }) => {
     return (
         <div className="RouteList">
             <Routes>
                 <Route path="/" element={<Homepage />} />
                 <Route path="/photos" element={<Photos photos={photos} />} />
-                <Route path="/photo/:id" element={<SinglePhoto />} />
+                <Route path="/photo/:id" element={<SinglePhoto rgbEditSave={rgbEditSave} />} />
                 <Route path="/edit:id" element={<EditForm />} />
                 <Route path="/upload" element={<UploadForm handleSave={handleSave} />} />
                 <Route path="*" element={<Navigate to="/" />} />
