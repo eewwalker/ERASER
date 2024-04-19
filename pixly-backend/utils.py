@@ -25,7 +25,7 @@ s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id,
 
 def upload_image_s3(file, bucket_name, filename):
     """"Upload image to s3 bucket."""
-    breakpoint()
+    # breakpoint()
     try:
         s3.upload_fileobj(
             file,
@@ -48,42 +48,36 @@ def get_image_and_convert_to_bytes(image_id):
           image_path, image_id, BASE_URL)
     # fetch img from AWS
     try:
-        print('BEFOREbucket_name', 'image_path', bucket_name, image_path)
         response = s3.get_object(Bucket=bucket_name, Key=image_id)
-        print('bucket_name', 'image_path', bucket_name, image_path)
-        print('resp', response)
         # read contents of file
         image_data = response['Body'].read()
         breakpoint()
         image_bytes = BytesIO(image_data)
-        test_image = Image.open(image_bytes)
-        print('testIMAEG', test_image)
         # Rewind to the start of the file
         image_bytes.seek(0)
         return image_bytes
     except Exception as e:
         return f'Failed to process {image_id} {e}'
 
-
-def convert_img_bw(image_bytes):
+# format = 'png'-> test without format.
+def convert_img_bw(tempfile):
     """convert image to black and white"""
-    print('imgInfuncB&W', image_bytes)
-    # output_path = image_bytes
-    # img.save(output_path)
-    image = Image.open(image_bytes)
-    print('imgInFunc', image)
+
+    image = Image.open(tempfile)
+    breakpoint()
     bw_image = image.convert('L')
-    print('b&w', bw_image)
-    return bw_image
+    newfile_to_upload = BytesIO()
+    bw_image.save(newfile_to_upload, format='png')
+
+    return newfile_to_upload
 
 
 def get_image_metadata(image_path):
     """Extract metadata from image."""
     try:
-
         img = Image.open(image_path)
-        # look into .getexif()
-        exif_data = img.getexif()
+        exif_data = img._getexif()
+        print(exif_data, "*****************")
         metadata = {}
 
         if exif_data is None:
@@ -102,11 +96,6 @@ def get_image_metadata(image_path):
                 metadata['date_time'] = value or '1'
             if tag_name == 'ISOSpeedRatings':
                 metadata['iso'] = value or 1
-            # make a func for GPS to parse info before it gets into DB.
-            # if tag_name == 'GPSInfo':
-            #     print(type(value), "gps TYPE VALUE***********")
-            #     print(value, "gps TYPE VALUE***********")
-                # metadata['location'] = value
             if tag_name == 'ExifImageHeight':
                 metadata['height'] = value or 1
             if tag_name == 'ExifImageWidth':

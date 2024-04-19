@@ -25,11 +25,10 @@ const PhotoTemplate = ({ photo }) => {
   const size = useContext(ResponsiveContext);
   return (
     <Card>
-      <CardHeader pad="medium">
-      </CardHeader>
+      <CardHeader pad="medium"></CardHeader>
       <CardBody pad="medium">
         <Paragraph maxLines={size === "small" ? 3 : undefined}>
-          <img className="Photo-img" src={`${S3_EMILY}/${photo}`} alt="photo" />
+          <img className="Photo-img" src={`${S3_JAZZ}/${photo}`} alt="photo" />
         </Paragraph>
       </CardBody>
     </Card>
