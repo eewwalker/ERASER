@@ -12,10 +12,13 @@ import {
   Header,
   Page,
   PageContent,
+  Data,
+  Toolbar,
+  DataSearch,
+  DataTable,
 } from "grommet";
 import { Moon, Sun } from "grommet-icons";
 import { deepMerge } from "grommet/utils";
-
 
 /** Component for entire page.
  *
@@ -62,6 +65,8 @@ const App = () => {
   const [photos, setPhotos] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [dark, setDark] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [saveSearch, setSaveSearch] = useState(localStorage.getItem("search"));
 
   const location = useLocation();
 
@@ -83,14 +88,40 @@ const App = () => {
     [location.pathname]
   );
 
+  /** Clear local storage whenever the path is not /upload. */
   useEffect(
     function clearLocalStorage() {
-      if (!location.pathname.startsWith('/upload')) {
+      if (!location.pathname.startsWith("/upload")) {
         localStorage.clear();
       }
     },
     [location.pathname]
   );
+
+  /** handle search bar and update local storage to use for API call to filter by search. */
+  const handleSearch = async (query) => {
+    localStorage.setItem("search", query);
+    setSaveSearch(localStorage.getItem("search"));
+
+    const data = await PixlyApi.getAllPhotos(query);
+    setPhotos(data);
+    setSearchQuery(query);
+  };
+
+  /** Get all items on search. */
+  useEffect(() => {
+    async function searchDB() {
+      try {
+        const data = await PixlyApi.getAllPhotos(
+          localStorage.getItem("search")
+        );
+        setPhotos(data);
+      } catch (error) {
+        console.error("Error happened searching:", error);
+      }
+    }
+    searchDB();
+  }, [saveSearch]);
 
   /** handleSave receives photoData from form and sends to backend */
   async function handleSave(uploadData) {
@@ -145,6 +176,19 @@ const App = () => {
         <div>
           <Page>
             <AppBar>
+              {location.pathname === "/photos" && (
+                <>
+                  <Toolbar>
+                    <form>
+                      <DataSearch
+                        onChange={(event) => handleSearch(event.target.value)}
+                        value={searchQuery}
+                      />
+                    </form>
+                  </Toolbar>
+                  <DataTable />
+                </>
+              )}
               <Button
                 a11yTitle={
                   dark ? "Switch to Light Mode" : "Switch to Dark Mode"
@@ -177,7 +221,6 @@ const App = () => {
           </Page>
         </div>
       )}
-
     </Grommet>
   );
 };

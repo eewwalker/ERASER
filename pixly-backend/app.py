@@ -57,9 +57,16 @@ def upload_image():
 @app.get('/photos')
 def get_all_photos():
     """Get all photos by key from DB."""
-    all_keys = Metadata.query.with_entities(Metadata.key).all()
 
-    allkeys_list = [key[0] for key in all_keys]
+    search = request.args.get('q')
+
+    if not search:
+        all_keys = Metadata.query.with_entities(Metadata.key).all()
+        allkeys_list = [key[0] for key in all_keys]
+    else:
+        all_keys = Metadata.query.filter(
+            Metadata.key.like(f"%{search}%")).all()
+        allkeys_list = [key.key for key in all_keys]
 
     return jsonify(allkeys_list)
 

@@ -25,21 +25,25 @@ const S3_EMILY = "https://pixlyappemily.s3.us-west-1.amazonaws.com";
 const PhotoTemplate = ({ photo }) => {
   const size = useContext(ResponsiveContext);
 
-  const maxWidth = size === 'small' ? 200 : 400;
-  const maxHeight = size === 'small' ? 150 : 300;
+  const maxWidth = size === "small" ? 200 : 400;
+  const maxHeight = size === "small" ? 150 : 300;
 
   const imgStyle = {
     maxWidth: `${maxWidth}px`,
     maxHeight: `${maxHeight}px`,
-    width: 'auto',
-    height: 'auto',
+    width: "auto",
+    height: "auto",
   };
-
 
   return (
     <Card height="medium" width="medium" background="light-1">
       <CardBody pad="small">
-        <img className="Photo-img" src={`${S3_EMILY}/${photo}`} alt="photo" style={imgStyle} />
+        <img
+          className="Photo-img"
+          src={`${S3_EMILY}/${photo}`}
+          alt="photo"
+          style={imgStyle}
+        />
       </CardBody>
     </Card>
   );

@@ -26,18 +26,27 @@ class PixlyApi {
   }
 
   /** GET request to PIXLY API to get all images. */
-  static async getAllPhotos() {
+  static async getAllPhotos(q) {
     const url = new URL(`${BASE_URL}/photos`);
 
-    try {
+    if (q === null || q === undefined) {
       const resp = await fetch(url);
       const data = resp.json();
-
       return data;
-    } catch (error) {
 
-      return null;
+    } else {
+
+      try {
+        url.searchParams.append('q', q);
+        const resp = await fetch(url);
+        const data = resp.json();
+        return data;
+      } catch (error) {
+
+        return null;
+      }
     }
+
   }
 
   /** POST request to edit photo to black&white or change rgb values */
