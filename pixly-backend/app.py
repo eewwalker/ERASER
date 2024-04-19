@@ -1,9 +1,9 @@
 import os
-from flask import (Flask, request, json, jsonify)
+from flask import (Flask, request, jsonify)
 from dotenv import load_dotenv
-from models import db, connect_db, Metadata
+from models import connect_db, Metadata
 from flask_debugtoolbar import DebugToolbarExtension
-from utils import upload_image_s3, get_image_metadata, \
+from utils import upload_image_s3, get_image_metadata, convert_img_rgb_vals, \
     convert_img_bw, get_image_and_convert_to_bytes
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
@@ -20,6 +20,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+
 toolbar = DebugToolbarExtension(app)
 bucket_name = os.environ['BUCKET_NAME']
 
@@ -39,17 +40,18 @@ def upload_image():
 
     img_metadata = get_image_metadata(file)
 
-    # breakpoint()
     # Uploads image to s3 and responds with image(str)
     if file:
         file.seek(0)
         filename = file.filename
 
         output = upload_image_s3(file, bucket_name, filename)
-        metadata_submit = Metadata.add_image_metadata(
+        image_metadata = Metadata.add_image_metadata(
             img_metadata, filename, author)
-        print("Success! metadata_submit:", metadata_submit)
+
+        print("Success! image_metadata:", image_metadata)
         return str(output)
+
 
 @app.get('/photos')
 def get_all_photos():
@@ -66,13 +68,24 @@ def edit_image(id):
     """Edit image based on id and filter."""
     try:
         data = request.get_json()
+        rgb_vals = data.get('rgb', None)
         convert_bw_filter = data.get('convert_bw', False)
+
         image_bytes = get_image_and_convert_to_bytes(id)
+        image_bytes.seek(0)
 
         if convert_bw_filter:
-            image = convert_img_bw(image_bytes)
-            image.seek(0)
-            upload_image_s3(image, bucket_name, id)
+            new_bw_img = convert_img_bw(image_bytes)
+            new_bw_img.seek(0)
+
+            upload_image_s3(new_bw_img, bucket_name, id)
+
+        if rgb_vals:
+            image_bytes.seek(0)
+            new_rgb_img = convert_img_rgb_vals(image_bytes, rgb_vals)
+
+            new_rgb_img.seek(0)
+            upload_image_s3(new_rgb_img, bucket_name, id)
 
         return {'status': 'success'}
 
