@@ -41,6 +41,24 @@ class PixlyApi {
     }
 
   }
+  /** POST request to edit photo to black&white or change rgb values */
+  static async editPhoto(imgId, rgbVals, bw) {
+    const url = new URL(`${BASE_URL}/edit-photo/${imgId}`);
+
+    try {
+      const resp = await fetch(url, {
+        method: 'POST',
+        body: { rgb: rgbVals, convert_bw: bw },
+      });
+
+      return resp;
+
+    } catch (error) {
+
+      return null;
+    }
+
+  }
 
 
 }
