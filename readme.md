@@ -50,7 +50,7 @@
 
 ![Screenshot](./assets/landing.png)
 
-Fullstack image editing application, built with React frontend, and Flask/Python backend. Made in collaboration with a partner within 3 days. Images are stored in Amazon S3 bucket, and replaced when edited-- either B&W convert, or color edit.
+Fullstack image editing application, built with React frontend, and Flask/Python backend. Made in collaboration with a partner within 3 days. Images are stored in Amazon S3 bucket, and replaced when edited-- either B&W convert, or color edit. If enough color edits are performed on a single image-- the image may be erased, hence, "Eraser."
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
