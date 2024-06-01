@@ -122,13 +122,15 @@ Backend:
 
 ![Screenshot](./assets/upload-photo.png)
 *This is where you can upload an image.*
-
+<br/>
+<br/>
 ![Screenshot](./assets/view-photos.png)
 *You can search for your photo here, or view all photos -> clicking on your photo takes you to the edit image page.*
-
+<br/>
+<br/>
 ![Screenshot](./assets/edit-photo.png)
 Edit your image here. B&W convert, or color edit.
-
+<br/>
 
 -Tip: you can work in the app in either dark or light mode, by clicking on the symbol in the top left of the Navbar.
 
