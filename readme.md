@@ -5,13 +5,10 @@
 
 <br />
 
-<h3 align="center">Eraser / Pixly</h3>
+<h3 align="center">Eraser/Pixly</h3>
 
   <p align="center">
-    Edit photo images with black and white filters, or color edit.
-    <br />
-    <a href="https://github.com/jazzcheema"><strong>Explore the docs »</strong></a>
-    <br />
+ Users can upload their photos and apply various edits, including transforming images to black & white and adjusting colors. 
     <br />
 </div>
 
@@ -35,7 +32,6 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -50,7 +46,7 @@
 
 ![Screenshot](./assets/landing.png)
 
-Fullstack image editing application, built with React frontend, and Flask/Python backend. Made in collaboration with a partner within 3 days. Images are stored in Amazon S3 bucket, and replaced when edited-- either B&W convert, or color edit. If enough color edits are performed on a single image-- the image may be erased, hence, "Eraser."
+Eraser 'Pixly' is a full-stack image editing application built with a React frontend and a Flask/Python backend. Amazon S3 bucket for image storage, replacing images upon editing— whether it's a black & white conversion or color adjustment. With Eraser, repeated color edits on a single image may trigger an "Eraser" action...
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -60,6 +56,7 @@ Fullstack image editing application, built with React frontend, and Flask/Python
 
 * [![React][React.js]][React-url]
 * [![Flask][Flask-logo]][Flask-url]
+* [![Vite][Vite-logo]][Vite-url]
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -77,18 +74,26 @@ Frontend:
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/jazzcheema/pixly-app/tree/main/pixly-frontend
+   git clone https://github.com/eewwalker/ERASER/
    ```
-2. Install NPM packages
+2. Go to Frontend folder
+   ```sh
+   cd ERASER/pixly-frontend
+   ```
+3. Install NPM packages
    ```sh
    npm install
+   ```
+4. Run frontend server (app will automatically load on browser) RUN AFTER COMPLETING BACKEND STEPS..
+   ```sh
+   npm start
    ```
 
 Backend:
 
-1. Clone the repo
+1. Go to Backend folder from root 'ERASER'
    ```sh
-   git clone https://github.com/jazzcheema/pixly-app/tree/main/pixly-backend
+    cd ERASER/pixly-backend
    ```
 2. Activate Venv
    ```sh
@@ -105,11 +110,11 @@ Backend:
    aws_secret_access_key = ...
    region_name = 'us-west-1'
    SECRET_KEY = ...
-   BUCKET_NAME = 'pixly-app-bucket'
+   BUCKET_NAME = 'bucket-name'
    DATABASE_URL = postgresql:///pixly
    ```
 
-5. Run the application
+5. Run backend server 
    ```sh
    flask run -p 5001
    ```
@@ -119,37 +124,25 @@ Backend:
 
 <!-- USAGE EXAMPLES -->
 ## Usage
-
-![Screenshot](./assets/upload-photo.png)
-*This is where you can upload an image.*
+<img width="1356" alt="Screenshot 2024-06-04 at 6 12 13 PM" src="https://github.com/eewwalker/ERASER/assets/114313334/60c41376-dfee-4cb3-8883-f6bb4cf9643d">
+Drag and Drop or upload image.
 <br/>
 <br/>
-![Screenshot](./assets/view-photos.png)
-*You can search for your photo here, or view all photos -> clicking on your photo takes you to the edit image page.*
 <br/>
 <br/>
-![Screenshot](./assets/edit-photo.png)
+<img width="1356" alt="Screenshot 2024-06-04 at 6 16 08 PM" src="https://github.com/eewwalker/ERASER/assets/114313334/7e701c6c-6b92-4a8f-be29-e988bb7f67cc">
+Search for photo in top left search bar or see all photos. Clicking on individual photo takes you to editing
+<br/>
+<br/>
+<br/>
+<br/>
+<img width="1356" alt="Screenshot 2024-06-04 at 6 13 20 PM" src="https://github.com/eewwalker/ERASER/assets/114313334/53f93fc4-ba84-4d75-876b-6f04ba30e09f">
 Edit your image here. B&W convert, or color edit.
 <br/>
-
--Tip: you can work in the app in either dark or light mode, by clicking on the symbol in the top left of the Navbar.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
-
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+<br/>
+<br/>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- LICENSE -->
@@ -164,7 +157,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Project Link: [https://github.com/jazzcheema/pixly-app](https://github.com/jazzcheema/pixly-app)
+Project Link: [https://github.com/eewwalker/ERASER](https://github.com/eewwalker/ERASER)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -173,7 +166,7 @@ Project Link: [https://github.com/jazzcheema/pixly-app](https://github.com/jazzc
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* [Built in collaboration with: Emily Walker](https://github.com/eewwalker)
+* Built in collaboration with: [Jazz Chema](https://github.com/jazzcheema)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -212,3 +205,5 @@ Project Link: [https://github.com/jazzcheema/pixly-app](https://github.com/jazzc
 [JQuery-url]: https://jquery.com
 [Flask-logo]: https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white
 [Flask-url]: https://flask.palletsprojects.com/
+[Vite-url]: https://vitejs.dev/
+[Vite-logo]: https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white
